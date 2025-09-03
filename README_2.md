@@ -27,7 +27,7 @@
 - ## 이제 어떤 파일들이 필요할까?
   - 1. minwoo
     - main.py: 메인파일로 여기서 프로젝트 실행
-    - data_setup.py: 데이터셋 받은걸 여기서 1차적으로 처리해주기
+    - data_setup.py: 데이터셋 csv 불러오고 data_split까지 진행
     - eda.ipynb : 주피터 노트북으로 eda 확인하면서 진행하자
   - 2. model
     - lightgbm.py: 라이트gbm 모델 만드는 파일
