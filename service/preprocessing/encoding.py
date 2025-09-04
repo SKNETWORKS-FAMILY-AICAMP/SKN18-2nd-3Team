@@ -31,6 +31,6 @@ def do_encoding():
             df.drop(columns=[city_feature], inplace=True)
 
     # 원핫인코딩 & 라벨인코딩한거 합치는 부분
-    df_train_final, df_test_final = df_train_ohe.align(df_test_ohe, join='outer', axis=1, fill_value=0)
+    df_train_encoding, df_test_encoding = df_train_ohe.align(df_test_ohe, join='outer', axis=1, fill_value=0)
 
-    return df_train_final, df_test_final
+    return  df_train_encoding, df_test_encoding
