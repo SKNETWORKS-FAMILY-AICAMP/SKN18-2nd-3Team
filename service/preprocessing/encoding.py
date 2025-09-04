@@ -17,7 +17,7 @@ category_train, category_test = predict_categorical(df_train, df_test)
 city_feature = 'city'
 
 
-def do_encoding():
+def do_encoding(df_train:pd.DataFrame, df_test:pd.DataFrame):
     # 원핫인코딩 진행부분
     ohe_cols = [col for col in category_train if col != city_feature]
     df_train_ohe = pd.get_dummies(df_train, columns=ohe_cols)
