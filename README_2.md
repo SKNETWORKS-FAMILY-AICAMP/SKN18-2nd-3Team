@@ -1,4 +1,7 @@
 # 만들고자 하는 것 : HR Analytics: Job Change of Data Scientists의 Feature 분석 및 모델 제작
+
+### 데이터셋 링크
+https://www.kaggle.com/datasets/arashnic/hr-analytics-job-change-of-data-scientists
 ---
 # 필요한 기능들 
 1. HR Analytics: Job Change of Data Scientists 데이터셋 로드 

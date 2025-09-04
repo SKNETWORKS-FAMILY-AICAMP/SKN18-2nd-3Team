@@ -1,5 +1,14 @@
+#데이터 클렌징
 import pandas as pd
 import numpy as np
+
+def __fillna():
+    pass
+
+
+
+
+
 
 
     # 1. row 중복 데이터 제거
