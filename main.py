@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO) #info이상 레벨만 보이게 해줌
 
 import argparse
 
-from .service.data_setup import load_dataset
+from .service.preprocessing.data_setup import load_dataset
 
 
 

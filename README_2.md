@@ -1,4 +1,4 @@
-# 만들고자 하는 것 : HR Analytics: Job Change of Data Scientists의 Feature 분석
+# 만들고자 하는 것 : HR Analytics: Job Change of Data Scientists의 Feature 분석 및 모델 제작
 ---
 # 필요한 기능들 
 1. HR Analytics: Job Change of Data Scientists 데이터셋 로드 
@@ -24,6 +24,7 @@
   - 2. service 폴더: 프로젝트가 구동되기 위한 필요한 파일들을 저장
     - 2-1. preprocessing: 전처리와 관련한 파일들을 저장하자
   - 3. minwoo 폴더: 가장 상위에 있는 폴더, main파일은 여기에 저장
+
 - ## 이제 어떤 파일들이 필요할까?
   - 1. minwoo
     - main.py: 메인파일로 여기서 프로젝트 실행
@@ -34,3 +35,22 @@
   - 3. service
     - cleansing.py
   - 4. preprocessing
+
+  - ## 어떤 column들을 drop할까?
+    - enrollee_id: 지원자 ID (고유 식별자) (drop)
+    - city: 도시 (drop)
+    - city_development_index: 도시 개발 지수 (발전 수준을 나타내는 지표) (not_drop)
+    - gender: 성별 (drop)
+    - relevent_experience: 관련 경력 여부 (not_drop)
+    - enrolled_university: 재학 중인 대학교 상태 (예: 현재 재학, 졸업 등) (not_drop)
+    - education_level: 교육 수준 (예: 고졸, 학사, 석사 등) (not_drop)
+    - major_discipline: 전공 분야 (not_drop)
+    - experience: 총 경력 (년 단위) (not_drop)
+    - company_size: 현재/이전 회사 규모 (직원 수 범위) (not_drop)
+    - company_type: 현재/이전 회사 유형 (예: 스타트업, 대기업 등) (not_drop)
+    - last_new_job: 마지막 이직 시기 (not_drop)
+    - training_hours: 훈련(교육) 시간 (drop)
+    - target: 타깃 값 (0: 이직안함, 1: 이직함)
+  
+  - ## 어떤 모델을 만들꺼니?
+    1. lightgbm 제작
