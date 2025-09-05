@@ -10,22 +10,22 @@ with col2:
     tab1, tab2 = st.tabs(["Company", "Candidate"])
     with tab1:
         company_view.show()
-        # sub_tab1, sub_tab2, sub_tab3 = st.tabs(["분석 그래프1", "분석 그래프2", "분석 그래프3"])
-        # with sub_tab1:
-        #     company_view.graph1_show()
-        # with sub_tab2:
-        #     company_view.graph2_show()
-        # with sub_tab3:
-        #     company_view.graph3_show()
-        col_btn1, col_btn2, col_btn3 = st.columns(3)
-        with col_btn1:
-            if st.button("분석 그래프1"):
-                company_view.graph1_show()
-        with col_btn2:
-            if st.button("분석 그래프2"):
-                company_view.graph2_show()
-        with col_btn3:
-            if st.button("분석 그래프3"):
-                company_view.graph3_show()
+        sub_tab1, sub_tab2, sub_tab3 = st.tabs(["분석 그래프1", "분석 그래프2", "분석 그래프3"])
+        with sub_tab1:
+            company_view.graph1_show()
+        with sub_tab2:
+            company_view.graph2_show()
+        with sub_tab3:
+            company_view.graph3_show()
+        # col_btn1, col_btn2, col_btn3 = st.columns(3)
+        # with col_btn1:
+        #     if st.button("분석 그래프1"):
+        #         company_view.graph1_show()
+        # with col_btn2:
+        #     if st.button("분석 그래프2"):
+        #         company_view.graph2_show()
+        # with col_btn3:
+        #     if st.button("분석 그래프3"):
+        #         company_view.graph3_show()
     with tab2:
         candidate_view.show()
