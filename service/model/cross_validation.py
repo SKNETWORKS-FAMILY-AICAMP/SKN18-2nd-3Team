@@ -1,6 +1,5 @@
-import numpy as np
-from .metrcis import Metrics_Type
 from sklearn.model_selection import StratifiedKFold
+from .metrcis import Metrics_Type
 
 def creat_cv(n_split:int=10, shuffle:bool=True, random_state=42): # cv 만드는 함수
     return StratifiedKFold(n_splits=n_split, shuffle=shuffle, random_state=random_state)
