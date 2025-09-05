@@ -25,7 +25,8 @@ def main(args):
         df_train=df_train, #trian 데이터를 받곘다
         df_test=df_test, #test 데이터를 받겠다
         drop_cols=args.drop_cols,
-        encoding_cols=args.encoding_cols
+        encoding_cols=args.encoding_cols,
+        transform_cols=args.transform_cols
     )
 
     # 모델을 학습시키자
@@ -43,11 +44,11 @@ if __name__ == "__main__":
     args.add_argument("--path_train", default="./Data/aug_train.csv", type=str)
     args.add_argument("--path_test", default="./Data/aug_test.csv", type=str)
     args.add_argument("--path_submission", default="./Data/sampl_submission.csv", type=str)
-    args.add_argument("--path.target_name", default="target", type=str)
+    args.add_argument("--target_name", default="target", type=str)
     
     # EDA 분석결과 집어넣기
     args.add_argument("--drop_cols", default=['enrollee_id','city','city_development_index','gender'], type=str)
-    args.add_argument("--transfrom_cols", default=[], type=str)
+    args.add_argument("--transform_cols", default=[], type=str)
     args.add_argument("--encoding_cols", default=[
         'relevent_experience',
         'enrolled_university',
