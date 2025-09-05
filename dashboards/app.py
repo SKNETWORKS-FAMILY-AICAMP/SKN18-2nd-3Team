@@ -1,6 +1,9 @@
 import streamlit as st
 import company_view
 import candidate_view
+import pandas as pd
+
+df = pd.read_csv("Data/test_predictions.csv")
 
 st.set_page_config(layout="wide") # 레이아웃 넓게
 
@@ -8,24 +11,22 @@ col1, col2, col3 = st.columns([1,3,1])
 
 with col2:
     tab1, tab2 = st.tabs(["Company", "Candidate"])
+
+
     with tab1:
-        company_view.show()
-        sub_tab1, sub_tab2, sub_tab3 = st.tabs(["분석 그래프1", "분석 그래프2", "분석 그래프3"])
+        company_view.info_show()
+        sub_tab1, sub_tab2, sub_tab3, sub_tab4 = st.tabs(["취업 경력에 따른 당사 입사 가능성", "분석 그래프2", "지원자의 전공 Level", "교육 참여도"])
         with sub_tab1:
             company_view.graph1_show()
+            company_view.show()
         with sub_tab2:
             company_view.graph2_show()
+            company_view.show()
         with sub_tab3:
             company_view.graph3_show()
-        # col_btn1, col_btn2, col_btn3 = st.columns(3)
-        # with col_btn1:
-        #     if st.button("분석 그래프1"):
-        #         company_view.graph1_show()
-        # with col_btn2:
-        #     if st.button("분석 그래프2"):
-        #         company_view.graph2_show()
-        # with col_btn3:
-        #     if st.button("분석 그래프3"):
-        #         company_view.graph3_show()
+            company_view.show()
+        with sub_tab4:
+            # company_view.graph4_show()
+            company_view.show()
     with tab2:
         candidate_view.show()
