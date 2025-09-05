@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-df = pd.read_csv("Data/test_predictions.csv")
+df = pd.read_csv("result_csv/result_test.csv")
 df['experience'] = df['experience'].astype(str).str.strip()
 experence_exp = df['experience'].replace({'<1':'0', '>20':'21'})
 experence_exp = pd.to_numeric(experence_exp, errors='coerce')
@@ -325,9 +325,6 @@ def graph3_show():
 
 
 
-
-
-    # st.plotly_chart(fig, use_container_width=True)
 
 
 
