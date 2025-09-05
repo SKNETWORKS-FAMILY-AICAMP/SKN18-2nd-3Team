@@ -3,26 +3,47 @@ import pandas as pd
 import numpy as np
 from pandas.api.types import is_numeric_dtype #특정 컬럼이 숫자형인지 판단
 
-def __fillna(df_train:pd.DataFrame, df_test:pd.DataFrame):
+def __fillna(df_train:pd.DataFrame, df_test:pd.DataFrame, cols : list):
+
+    for col in cols:
+        if col not in df_train.columns:
+            continue
+
+        # train 기준으로 결측치 채우기
+        if pd.api.types.is_numeric_dtype(df_train[col]):
+            value = df_train[col].mean()   # 수치형 → 평균
+        else:
+            value = df_train[col].mode()[0]  # 범주형 → 최빈값
+
+        # train 채우기
+        df_train[col].fillna(value, inplace=True)
+
+        # test에도 같은 컬럼 있으면 채우기
+        if col in df_test.columns:
+            df_test[col].fillna(value, inplace=True)
+
+    return df_train, df_test
+
+
     # 결측치 파악
-    train_none_cols = df_train.isnull().sum()[df_train.isnull().sum() > 0].index
-    test_none_cols = df_test.isnull().sum()[df_test.isnull().sum() > 0].index
-    none_cols = list(set(train_none_cols) | set(test_none_cols)) # -> 결측치들의 합집합
+    #train_none_cols = df_train.isnull().sum()[df_train.isnull().sum() > 0].index
+    #test_none_cols = df_test.isnull().sum()[df_test.isnull().sum() > 0].index
+    #none_cols = list(set(train_none_cols) | set(test_none_cols)) # -> 결측치들의 합집합
     # 결측치들 리스트에 담았음.
 
-    for col in none_cols: # 결측치 처리하는 부분
-        # train데이터 결측치처리
-        if is_numeric_dtype(df_train[col]): # 수치형 데이터 결측치 처리
-            _value = df_train[col].mean()
-        else:
-            _value = df_train[col].mode()[0] # 범주형 데이터 결측치 처리
+    #for col in none_cols: # 결측치 처리하는 부분
+    #    # train데이터 결측치처리
+    #    if is_numeric_dtype(df_train[col]): # 수치형 데이터 결측치 처리
+    #        _value = df_train[col].mean()
+    #    else:
+    #        _value = df_train[col].mode()[0] # 범주형 데이터 결측치 처리
 
-        # test/train 결측치 채우기
-        df_train[col].fillna(_value, inplace = True) #train에 결측치 처리
-        if col in df_test.columns: #df_train 컬럼에 있는게 test에도 있으면 결측치를 채움(범주형)
-            df_test[col].fillna(_value, inplace=True)
+    #    # test/train 결측치 채우기
+    #    df_train[col].fillna(_value, inplace = True) #train에 결측치 처리
+    #    if col in df_test.columns: #df_train 컬럼에 있는게 test에도 있으면 결측치를 채움(범주형)
+    #        df_test[col].fillna(_value, inplace=True)
     
-    return df_train, df_test
+    #return df_train, df_test
 
 def __drop_cols(df_train:pd.DataFrame,df_test:pd.DataFrame, drop_cols:list): #컬럼 드랍함수
     return df_train.drop(drop_cols, axis=1), df_test.drop(drop_cols, axis=1)
