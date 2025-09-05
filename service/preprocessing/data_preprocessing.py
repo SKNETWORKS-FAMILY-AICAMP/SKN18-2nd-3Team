@@ -9,6 +9,6 @@ def do_preprocessing(df_train: pd.DataFrame, df_test: pd.DataFrame, drop_cols:li
     df_train, df_test = do_cleansing(df_train, df_test, drop_cols, transform_cols)
 
     # 2. change datatype for encoding
-    df_train, df_test = do_encoding(df_train, df_test)
+    df_train, df_test = do_encoding(df_train, df_test, encoding_cols)
 
     return df_train, df_test
