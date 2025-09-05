@@ -17,7 +17,7 @@ category_train, category_test = predict_categorical(df_train, df_test)
 city_feature = 'city'
 
 
-def do_encoding():
+def do_encoding(df_train:pd.DataFrame, df_test:pd.DataFrame):
     # 원핫인코딩 진행부분
     ohe_cols = [col for col in category_train if col != city_feature]
     df_train_ohe = pd.get_dummies(df_train, columns=ohe_cols)
@@ -31,6 +31,6 @@ def do_encoding():
             df.drop(columns=[city_feature], inplace=True)
 
     # 원핫인코딩 & 라벨인코딩한거 합치는 부분
-    df_train_final, df_test_final = df_train_ohe.align(df_test_ohe, join='outer', axis=1, fill_value=0)
+    df_train_encoding, df_test_encoding = df_train_ohe.align(df_test_ohe, join='outer', axis=1, fill_value=0)
 
-    return df_train_final, df_test_final
+    return  df_train_encoding, df_test_encoding
