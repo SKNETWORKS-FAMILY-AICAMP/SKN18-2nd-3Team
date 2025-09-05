@@ -30,15 +30,24 @@ def info_show():
         green_count = random_df[random_df['prediction'] == '🟢'].shape[0]
         yellow_count = random_df[random_df['prediction'] == '🟡'].shape[0]
         red_count = random_df[random_df['prediction'] == '🔴'].shape[0]
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.write(f"🟢(60%이상): {green_count}")
-        with col2:
-            st.write(f"🟡(20%이상 - 60% 미만): {yellow_count}")
-        with col3:
-            st.write(f"🔴(20%미만): {red_count}")
+        # prediction값 비율
+        green_pct = round((green_count / random_df.shape[0] * 100), 2)
+        yellow_pct = round((yellow_count / random_df.shape[0] * 100), 2)
+        red_pct = round((red_count / random_df.shape[0] * 100), 2)
+        
+        # 2행3열로 만들기
+        st.subheader("Signal")
+        info_df = pd.DataFrame({
+            # 'Category': ['🟢', '🟡', '🔴'],
+            'count(명)': [green_count, yellow_count, red_count],
+            'percentage(%)': [green_pct, yellow_pct, red_pct]
+        }).T
 
+        # info_df = pd.DataFrame(info_df.to_numpy())
+        info_df.columns = ['🟢(60%이상)', '🟡(20%이상 - 60% 미만)', '🔴(20%미만)']
+        st.dataframe(info_df, use_container_width=True)
 
+#-------------------------------------------------------------------------------------------------------------------------------------
 def show():
     st.title("company view")
 
@@ -46,15 +55,16 @@ def show():
 
     random_df = df[important_columns] # 중요 컬럼 몇개만 뽑아서 
 
+    random_df = df[important_columns].rename(columns={"prediction": "signal"})
 
-    random_df['prediction'] = random_df['prediction'].apply(
+    random_df['signal'] = random_df['signal'].apply(
         lambda x: '🟢' 
         if x >= 0.6 else '🟡' 
         if x >= 0.2 else '🔴'
     )
-
     st.dataframe(random_df)
 
+#-------------------------------------------------------------------------------------------------------------------------------------
 def graph1_show():
     st.title("취업 경력이 없는 취업준비생")
     # company_size: nan이고 company_type:nan이고 last_new_job: never인 데이터 추출 -> 취업 준비생
@@ -118,10 +128,9 @@ def graph1_show():
     })
     st.plotly_chart(fig)
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 def graph2_show():
-    st.title("최종학력에 따른 당사 회사 합류 비율")
+    st.title("지원자의 학력")
 
     # 최종학력 파이차트 그리기
     level_df = df['education_level'].value_counts()
@@ -188,7 +197,7 @@ def graph2_show():
 
 
 
-    st.title("학교재학상태에 따른 당사 회사 합류 비율")
+    st.title("지원자의 재학 상태")
     # 학교재학상태별 파이차트 그리기기
     enrolled_df = df['enrolled_university'].value_counts()
 
@@ -250,10 +259,9 @@ def graph2_show():
     
     st.plotly_chart(fig, use_container_width=True)
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 def graph3_show():
-    st.title("전공별 회사 합류 가능성")
+    st.title("지원자의 전공")
     major_df = df['major_discipline'].value_counts()
     chart_data_major = pd.DataFrame({
         'Category': major_df.index.tolist(),
@@ -293,7 +301,7 @@ def graph3_show():
     major_dataframe = major_dataframe.applymap(lambda x: f"{x:.2f}")
     st.dataframe(major_dataframe)
 
-    st.title("경력별 회사 합류 비율")
+    st.title("지원자의 연차")
     # experience별 🟠,🟢,🔴 비율 구하기
     experience_df = df['experience'].value_counts()
     experience_details = {}
@@ -321,9 +329,8 @@ def graph3_show():
             "red": "#ff5c5c"
         }
     )
+
     st.plotly_chart(fig)
-
-
 
 
 
