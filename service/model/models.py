@@ -1,6 +1,8 @@
-#lightgbm_model 제작
+
 import enum
+from typing import Union, Dict, Any
 from lightgbm import LGBMClassifier
+from xgboost import XGBClassifier
 
 class Model_Type(enum.Enum):# enum 클래스 정의
     # -> XGBosst, LightGBM, 등등 모델 여기에 정의
