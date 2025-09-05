@@ -1,6 +1,7 @@
 import pandas as pd
 from service.data_setup import do_load_dataset
 from sklearn.preprocessing import LabelEncoder
+from pandas.api.types import CategoricalDtype
 
 
 # 인코딩 전에 컬럼이 범주형인지 아닌지 구분하는 함수 제작
@@ -8,7 +9,7 @@ def predict_categorical(df_train:pd.DataFrame, df_test:pd.DataFrame):
     def get_categorical_cols(df_category):
         return [ # 리스트 컴프리헨션 사용
             col for col in df_category.columns
-            if pd.api.types.is_object_dtype(df_category[col]) or pd.api.types.is_categorical_dtype(df_category[col])
+            if pd.api.types.is_object_dtype(df_category[col]) or isinstance(df_category[col].dtype, CategoricalDtype)
         ]
     return get_categorical_cols(df_train), get_categorical_cols(df_test)
 
