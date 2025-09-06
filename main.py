@@ -21,8 +21,25 @@ def main(args):
     df_train, df_test, df_train_target =do_load_dataset(
         train_path=args.path_train, test_path=args.path_test, target_name=args.target_name
     )
-    
-    # 2. 데이터를 전처리하자
+
+    # 2. 학습에 도움이 되는 feature 불러오기
+    df_train, df_test = size_type_last(df_train, df_test)
+    df_train, df_test = rel_major(df_train, df_test)
+
+    # job_size_type_group → 라벨 문자열 컬럼 (모델 입력에 불필요)
+    if "job_size_type_group" in df_train.columns:
+        df_train.drop(columns=["job_size_type_group"], inplace=True)
+    if "job_size_type_group" in df_test.columns:
+        df_test.drop(columns=["job_size_type_group"], inplace=True)
+
+    # (옵션) 숫자형 보정
+    for c in ["job_size_type_code", "rel_major_code"]:
+        if c in df_train.columns:
+            df_train[c] = df_train[c].astype("int32")
+        if c in df_test.columns:
+            df_test[c] = df_test[c].astype("int32")
+
+    # 3. 데이터를 전처리하자
     df_train, df_test = do_preprocessing(
         df_train=df_train, #trian 데이터를 받곘다
         df_test=df_test, #test 데이터를 받겠다
@@ -31,14 +48,14 @@ def main(args):
         transform_cols=args.transform_cols
     )
 
-    # 3. xgboost 오류 방지(컬럼에 기호가 들어가지 않게 막아주는 부분)
+    # 4. xgboost 오류 방지(컬럼에 기호가 들어가지 않게 막아주는 부분)
     df_train, df_test = clean_column_names(df_train, df_test)
 
-    # 4. 모델을 학습시키자
+    # 5. 모델을 학습시키자
     is_model = do_training(df_train, df_train_target, args)
     logging.info(f"학습에 사용한 모델: {args.model_name}")
 
-    # 5. submission 결과 제출
+    # 6. submission 결과 제출
     create_submission_file(is_model=is_model, df_test=df_test)
 
 if __name__ == "__main__":
@@ -65,7 +82,7 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="lightgbm") # 학습할 모델 선택하는 부분
+    args.add_argument("--model_name", default="xgboost") # 학습할 모델 선택하는 부분
     args.add_argument("--hp", default={}, type=dict)
 
     main(args.parse_args()) # 터미널에서 입력된 값을 실제로 해석해서 args 안에 저장.
