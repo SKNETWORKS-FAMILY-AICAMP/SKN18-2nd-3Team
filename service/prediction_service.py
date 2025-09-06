@@ -4,6 +4,13 @@ import numpy as np
 import os
 import logging
 
+# pandas 경고 해결 설정
+pd.set_option('future.no_silent_downcasting', True)
+
+# 전처리 모듈들 import
+from service.preprocessing.data_preprocessing import do_preprocessing
+from service.preprocessing.create_feature import size_type_last, rel_major
+
 class PredictionService:
     """모델 로드 및 예측 서비스 클래스"""
     
@@ -11,13 +18,10 @@ class PredictionService:
         self.model_path = model_path
         self.model = None
         self.training_columns = None
-        self.columns_path = model_path.replace('.pkl', '_columns.pkl')  # 컬럼 정보 파일 경로
+        self.columns_path = model_path.replace('.pkl', '_columns.pkl')
         
     def load_model(self) -> bool:
-        """
-        저장된 모델을 로드
-
-        """
+        """저장된 모델을 로드"""
         try:
             if os.path.exists(self.model_path):
                 with open(self.model_path, 'rb') as f:
@@ -35,10 +39,7 @@ class PredictionService:
             return False
     
     def _load_training_columns(self):
-        """
-        훈련 시 사용된 컬럼 정보로드
-
-        """
+        """훈련 시 사용된 컬럼 정보 로드"""
         if os.path.exists(self.columns_path):
             try:
                 with open(self.columns_path, 'rb') as f:
@@ -49,9 +50,7 @@ class PredictionService:
                 logging.warning(f"저장된 컬럼 파일 로드 실패: {e}")
     
     def _save_training_columns(self):
-        """
-        훈련 컬럼 정보를 파일로 저장
-        """
+        """훈련 컬럼 정보를 파일로 저장"""
         try:
             with open(self.columns_path, 'wb') as f:
                 pickle.dump(self.training_columns, f)
@@ -59,35 +58,13 @@ class PredictionService:
         except Exception as e:
             logging.warning(f"컬럼 정보 저장 실패: {e}")
 
-    def _preprocess_sample_for_columns(self, sample_input: dict) -> pd.DataFrame:
-        """
-        컬럼 구조 파악을 위한 전처리
-        """
-        df = pd.DataFrame([sample_input])
-        
-        # 기본 전처리 적용
-        df = self._apply_basic_preprocessing(df)
-        
-        # Feature Engineering 적용
-        df = self._create_additional_features(df)
-        
-        # 인코딩 적용
-        encoding_cols = [
-            'relevent_experience', 'enrolled_university', 'education_level',
-            'major_discipline', 'experience', 'company_size',
-            'company_type', 'last_new_job',
-            'rel_major_code', 'job_size_type_code', 'exp_bin_code'
-        ]
-        df_encoded = self._do_single_encoding(df, encoding_cols)
-        
-        return df_encoded
-
     def _apply_basic_preprocessing(self, df: pd.DataFrame) -> pd.DataFrame:
+        """기본 전처리: 한글 매핑 및 기본값 설정"""
         df = df.copy()
         
         # 전체 데이터에서 "정보없음" → NaN으로 변환
-        df = df.replace("정보없음", np.nan)
-
+        df = df.replace("정보없음", np.nan).infer_objects(copy=False)
+        
         # 한글 매핑
         company_size_mapping = {
             '10명 이하': '<10',
@@ -105,36 +82,19 @@ class PredictionService:
         }
 
         if 'company_size' in df.columns:
-            df['company_size'] = df['company_size'].map(company_size_mapping).fillna(df['company_size'])
+            df['company_size'] = df['company_size'].map(company_size_mapping).fillna(df['company_size']).infer_objects(copy=False)
 
         if 'last_new_job' in df.columns:
-            df['last_new_job'] = df['last_new_job'].map(last_new_job_mapping).fillna(df['last_new_job'])
+            df['last_new_job'] = df['last_new_job'].map(last_new_job_mapping).fillna(df['last_new_job']).infer_objects(copy=False)
 
         # training_hours 기본값 추가
         if 'training_hours' not in df.columns:
-            df['training_hours'] = 40
+            df['training_hours'] = 50
 
         return df
 
-
-    def _do_single_encoding(self, df: pd.DataFrame, encoding_cols: list) -> pd.DataFrame:
-        """
-        단일 DataFrame에 대한 원핫 인코딩
-        """
-        df_encoded = df.copy()
-        
-        # 존재하는 컬럼만 인코딩
-        existing_cols = [col for col in encoding_cols if col in df_encoded.columns]
-        
-        if existing_cols:
-            df_encoded = pd.get_dummies(df_encoded, columns=existing_cols)
-        
-        return df_encoded
-
     def _align_with_reference(self, df: pd.DataFrame, reference_columns: list, fill_value=0) -> pd.DataFrame:
-        """
-        DataFrame을 참조 컬럼 리스트와 동일하게 정렬
-        """
+        """DataFrame을 참조 컬럼 리스트와 동일하게 정렬"""
         df_aligned = df.copy()
         
         # 누락된 컬럼 추가
@@ -147,132 +107,74 @@ class PredictionService:
         
         return df_aligned
     
-    def _create_additional_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        size_type_last, rel_major 기반의 파생 특성 생성
-        """
-        df = df.copy()
-
-        # -------------------------
-        # 1. 회사 규모 + 유형 + 마지막 이직 (size_type_last)
-        # -------------------------
-        def _classify(row):
-            cs_nan = pd.isna(row.get("company_size"))
-            ct_nan = pd.isna(row.get("company_type"))
-            lnj = row.get("last_new_job")
-
-            if cs_nan and ct_nan:  # 둘 다 NaN
-                if pd.isna(lnj):
-                    return "No Response"
-                elif lnj == "never":
-                    return "New Graduate"
-                else:
-                    return "Experienced Unemployed"
-            else:
-                return "Complete"
-
-        df["job_size_type_group"] = df.apply(_classify, axis=1)
-
-        group2code = {
-            "No Response": 0,
-            "New Graduate": 1,
-            "Experienced Unemployed": 2,
-            "Other_NoResponse": 3,
-            "Other_NewGraduate": 4,
-            "Other_Experienced": 5,
-            "Complete": 6,
-        }
-        df["job_size_type_code"] = df["job_size_type_group"].map(group2code).fillna(6).astype(int)
-
-        # -------------------------
-        # 2. 관련 경험 × 전공 (rel_major)
-        # -------------------------
-        def norm_rel(x):
-            if pd.isna(x):
-                return np.nan
-            s = str(x).strip().lower()
-            if s.startswith("has"):
-                return "Has"
-            if s.startswith("no"):
-                return "No"
-            return s
-
-        # major_discipline 컬럼 선택 (혹시 dicipline 오타 대응)
-        if "major_discipline" in df.columns:
-            major_col = "major_discipline"
-        elif "major_dicipline" in df.columns:
-            major_col = "major_dicipline"
-        else:
-            major_col = None
-
-        if major_col:
-            rel_txt = df["relevent_experience"].apply(norm_rel)
-            major_txt = df[major_col].astype("string")
-            cross_txt = rel_txt.astype("string").str.cat(major_txt, sep="|", na_rep="NA")
-            df["rel_major_code"] = cross_txt
-        else:
-            df["rel_major_code"] = "Unknown"
-
-        return df
-
-    
-    def _convert_experience_to_number(self, experience_str: str) -> float:
-        """
-        경험 문자열을 숫자로 변환
-        """
-        if experience_str == '<1':
-            return 0.5
-        elif experience_str == '>20':
-            return 22.0
-        else:
-            try:
-                return float(experience_str)
-            except:
-                return 5.0  # 기본값
-    
     def preprocess_input(self, user_input: dict) -> pd.DataFrame:
         """
-        사용자 입력을 전처리
+        기존 전처리 모듈을 활용한 사용자 입력 전처리
         """
         try:
             # 1. DataFrame으로 변환
             df = pd.DataFrame([user_input])
             
-            # 2. 기본 전처리 적용 (모듈화된 함수 사용)
+            # 2. 기본 전처리 적용 (한글 매핑, 기본값 설정)
             df = self._apply_basic_preprocessing(df)
             
-            # 2.5. Feature Engineering 적용
-            df = self._create_additional_features(df)
+            # 3. 더미 train 데이터 생성 - 동일한 데이터로 시작
+            df_dummy_train = df.copy()
+            df_test = df.copy()
             
-            # 3. preprocessing 모듈의 인코딩 함수 사용 (범주형만 인코딩)
+            # 4. Feature Engineering - 기존 create_feature.py 함수들 사용
+            df_dummy_train, df_test = size_type_last(df_dummy_train, df_test)
+            df_dummy_train, df_test = rel_major(df_dummy_train, df_test)
+            
+            # job_size_type_group 컬럼 제거 (모델 입력에 불필요한 라벨 컬럼)
+            for df_temp in [df_dummy_train, df_test]:
+                if "job_size_type_group" in df_temp.columns:
+                    df_temp.drop(columns=["job_size_type_group"], inplace=True)
+            
+            # 코드 컬럼들을 int32로 변환
+            for c in ["job_size_type_code", "rel_major_code"]:
+                for df_temp in [df_dummy_train, df_test]:
+                    if c in df_temp.columns:
+                        df_temp[c] = df_temp[c].astype("int32")
+            
+            # 5. 전처리 파이프라인
+            drop_cols = []  
+            transform_cols = [] 
             encoding_cols = [
                 'relevent_experience', 'enrolled_university', 'education_level',
                 'major_discipline', 'experience', 'company_size',
-                'company_type', 'last_new_job',
-                'rel_major_code', 'job_size_type_code', 'exp_bin_code' 
+                'company_type', 'last_new_job'
             ]
-            df_encoded = self._do_single_encoding(df, encoding_cols)
             
+            # 컬럼 수 확인
+            print(f"\n전처리 전 - dummy_train 컬럼 수: {df_dummy_train.shape[1]}, test 컬럼 수: {df_test.shape[1]}")
+            print(f"\n전처리 전 - dummy_train 컬럼: {list(df_dummy_train.columns)}")
+            print(f"\n전처리 전 - test 컬럼: {list(df_test.columns)}")
+            
+            df_dummy_train, df_processed = do_preprocessing(
+                df_dummy_train, df_test, drop_cols, transform_cols, encoding_cols
+            )
+            
+            # 6. 학습 시 사용한 컬럼과 정렬
             if self.training_columns:
-                df_encoded = self._align_with_reference(df_encoded, self.training_columns, fill_value=0)
-                logging.info(f"컬럼 정렬 완료: {df_encoded.shape[1]}개 특성")
+                df_processed = self._align_with_reference(
+                    df_processed, self.training_columns, fill_value=0
+                )
+                logging.info(f"\n컬럼 정렬 완료: {df_processed.shape[1]}개 특성")
             else:
-                logging.warning("훈련 컬럼 정보가 없어 정렬을 건너뜁니다.")
+                logging.warning("\n훈련 컬럼 정보가 없어 정렬을 건너뜁니다.")
             
-            print(f"전처리된 데이터 shape: {df_encoded.shape}")
-            print(f"전처리된 데이터 컬럼: {list(df_encoded.columns)}")
+            print(f"\n전처리된 데이터 shape: {df_processed.shape}")
+            print(f"\n전처리된 데이터 컬럼: {list(df_processed.columns)}")
             
-            return df_encoded
+            return df_processed
             
         except Exception as e:
             logging.error(f"전처리 중 오류 발생: {e}")
             raise
 
     def predict(self, user_input: dict) -> float:
-        """
-        사용자 입력에 대한 예측을 수행
-        """
-        # 모델이 로드되지 않았다면 로드 시도
+        """사용자 입력에 대한 예측을 수행"""
         if self.model is None:
             if not self.load_model():
                 raise Exception("모델 로드 실패")
@@ -283,11 +185,11 @@ class PredictionService:
             
             # 예측 실행
             prediction_proba = self.model.predict_proba(df_processed)
-            print(f"예측 결과 shape: {prediction_proba.shape}")
+            print(f"\n예측 결과 shape: {prediction_proba.shape}")
             
             # 클래스 1 (합류할 확률)의 확률 반환
-            probability = prediction_proba[0, 1]  # 두 번째 클래스 (target=1)의 확률
-            print(f"최종 예측 확률: {probability}")
+            probability = prediction_proba[0, 1]
+            print(f"\n최종 예측 확률: {probability}")
             
             return float(probability)
             
@@ -296,11 +198,8 @@ class PredictionService:
             raise
 
 
-# 전역 서비스 
 prediction_service = PredictionService()
 
 def get_prediction(user_input: dict) -> float:
-    """
-    편의 함수: 사용자 입력에 대한 예측 확률을 반환
-    """
+    """편의 함수: 사용자 입력에 대한 예측 확률을 반환"""
     return prediction_service.predict(user_input)

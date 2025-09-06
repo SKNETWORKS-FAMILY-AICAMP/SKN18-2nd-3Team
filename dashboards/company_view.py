@@ -2,9 +2,12 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# pandas 경고 완전 해결
+pd.set_option('future.no_silent_downcasting', True)
+
 df = pd.read_csv("result_csv/result_test.csv")
 df['experience'] = df['experience'].astype(str).str.strip()
-experence_exp = df['experience'].replace({'<1':'0', '>20':'21'})
+experence_exp = df['experience'].replace({'<1':'0', '>20':'21'}).infer_objects(copy=False)
 experence_exp = pd.to_numeric(experence_exp, errors='coerce')
 experence_exp = experence_exp.dropna()
 experence_exp = experence_exp.astype(int)
@@ -17,7 +20,7 @@ def info_show():
 
         important_columns = ["relevent_experience", "enrolled_university", "education_level", "major_discipline", "experience", "company_size", "company_type", "last_new_job", "prediction"]
 
-        random_df = df[important_columns] # 중요 컬럼 몇개만 뽑아서 
+        random_df = df[important_columns].copy()  # .copy() 추가로 SettingWithCopyWarning 해결
 
 
         random_df['prediction'] = random_df['prediction'].apply(
@@ -298,7 +301,7 @@ def graph3_show():
     major_dataframe = pd.DataFrame(major_details)
     major_dataframe = major_dataframe.T
     major_dataframe.columns = ['Green(%)', 'Yellow(%)', 'Red(%)']
-    major_dataframe = major_dataframe.applymap(lambda x: f"{x:.2f}")
+    major_dataframe = major_dataframe.map(lambda x: f"{x:.2f}")  # applymap → map으로 변경
     st.dataframe(major_dataframe)
 
     st.title("지원자의 연차")

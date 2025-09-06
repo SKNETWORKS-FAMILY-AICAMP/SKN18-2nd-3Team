@@ -63,7 +63,7 @@ if __name__ == "__main__":
     # .add_argument() → 받을 옵션/인자들을 등록.
     args.add_argument("--path_train", default="./Data/aug_train.csv", type=str)
     args.add_argument("--path_test", default="./Data/aug_test.csv", type=str)
-    args.add_argument("--path_submission", default="./Data/sampl_submission.csv", type=str)
+    args.add_argument("--path_submission", default="./Data/sample_submission.csv", type=str)
     args.add_argument("--target_name", default="target", type=str)
     
     # EDA 분석결과 집어넣기
