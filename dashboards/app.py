@@ -3,7 +3,7 @@ import company_view
 import candidate_view
 import pandas as pd
 
-df = pd.read_csv("result_csv/result_test.csv")
+df = pd.read_csv("./result_csv/result_test.csv") # 상대경로로 설정
 
 st.set_page_config(layout="wide") # 레이아웃 넓게
 
