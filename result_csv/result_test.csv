@@ -1,4 +1,5 @@
 enrollee_id,city,city_development_index,gender,relevent_experience,enrolled_university,education_level,major_discipline,experience,company_size,company_type,last_new_job,training_hours,prediction
+<<<<<<< HEAD
 32403,city_41,0.8270000000000001,Male,Has relevent experience,Full time course,Graduate,STEM,9,<10,,1,21,0.22848951117592797
 9858,city_103,0.92,Female,Has relevent experience,no_enrollment,Graduate,STEM,5,,Pvt Ltd,1,98,0.316468440313603
 31806,city_21,0.624,Male,No relevent experience,no_enrollment,High School,,<1,,Pvt Ltd,never,15,0.21582287353156737

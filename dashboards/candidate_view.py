@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import streamlit as st
 import pandas as pd
 import os
@@ -147,4 +148,3 @@ def show():
             with st.expander("입력된 정보"):
                 input_df = pd.DataFrame([user_input])
                 st.dataframe(input_df, use_container_width=True)
-            
