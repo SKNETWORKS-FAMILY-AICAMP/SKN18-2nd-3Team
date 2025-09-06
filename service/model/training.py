@@ -12,7 +12,7 @@ def do_training(df_train, df_train_target, args):
     )
     logging.info(f"score_by_cv_roc_auc_score:{score_by_cv_roc_auc_score}")
 
-    if score_by_cv_roc_auc_score >= 0.6: # 선택된 값이 0.7 이상이면
-        result = model # result에 결과값 입력
+    if score_by_cv_roc_auc_score >= 0.7: # 선택된 값이 0.7 이상이면 result에 결과값 입력
+        result = model
     
     return result # 리턴값으로 result 받음
