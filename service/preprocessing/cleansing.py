@@ -1,7 +1,7 @@
 #데이터 클렌징
 import pandas as pd
 import numpy as np
-from pandas.api.types import is_numeric_dtype #특정 컬럼이 숫자형인지 판단
+from pandas.api.types import is_numeric_dtype # 특정 컬럼이 숫자형인지 판단
 
 def __fillna(df_train:pd.DataFrame, df_test:pd.DataFrame):
     # 결측치 파악
