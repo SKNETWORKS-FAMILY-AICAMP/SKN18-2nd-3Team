@@ -32,6 +32,14 @@ def main(args):
     # 모델을 학습시키자
     is_model = do_training(df_train, df_train_target, args)
 
+    # 학습된 모델 저장하자
+    if is_model:
+        import pickle
+
+        with open("Data/models/model.pkl", "wb") as f:
+            pickle.dump(is_model, f)
+        print("모델 저장 완료!!")
+
     # submission 제출하는 부분
     create_submission_file(is_model=is_model, df_test=df_test)
 
