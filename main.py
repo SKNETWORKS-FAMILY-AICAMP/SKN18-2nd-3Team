@@ -63,6 +63,7 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="xgboost")
+    args.add_argument("--model_name", default="xgboost") # 학습할 모델 선택하는 부분
     args.add_argument("--hp", default={}, type=dict)
+    
     main(args.parse_args()) # 터미널에서 입력된 값을 실제로 해석해서 args 안에 저장.
