@@ -13,6 +13,7 @@ from service.data_setup import do_load_dataset
 from service.preprocessing.data_preprocessing import do_preprocessing
 from service.model.training import do_training
 from service.submission import create_submission_file
+from service.submission import clean_column_names
 
 def main(args):
     # 1. 데이터를 불러오자
@@ -28,12 +29,14 @@ def main(args):
         encoding_cols=args.encoding_cols,
         transform_cols=args.transform_cols
     )
+    # 3. xgboost 오류 방지
+    df_train, df_test = clean_column_names(df_train, df_test)
 
-    # 3. 모델을 학습시키자
+    # 4. 모델을 학습시키자
     is_model = do_training(df_train, df_train_target, args)
     logging.info(f"학습에 사용한 모델: {args.model_name}")
 
-    # 4. submission 결과 제출
+    # 5. submission 결과 제출
     create_submission_file(is_model=is_model, df_test=df_test)
 
 if __name__ == "__main__":
