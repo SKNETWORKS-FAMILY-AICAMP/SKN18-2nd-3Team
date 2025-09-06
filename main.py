@@ -29,7 +29,7 @@ def main(args):
         encoding_cols=args.encoding_cols,
         transform_cols=args.transform_cols
     )
-    # 3. xgboost 오류 방지
+    # 3. xgboost 오류 방지(컬럼에 기호가 들어가지 않게 막아주는 부분)
     df_train, df_test = clean_column_names(df_train, df_test)
 
     # 4. 모델을 학습시키자
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="xgboost") # 학습할 모델 선택하는 부분
+    args.add_argument("--model_name", default="lightgbm") # 학습할 모델 선택하는 부분
     args.add_argument("--hp", default={}, type=dict)
-    
+
     main(args.parse_args()) # 터미널에서 입력된 값을 실제로 해석해서 args 안에 저장.
