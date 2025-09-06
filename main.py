@@ -14,13 +14,14 @@ from service.preprocessing.data_preprocessing import do_preprocessing
 from service.model.training import do_training
 from service.submission import create_submission_file
 from service.submission import clean_column_names
+from service.preprocessing.create_feature import rel_major, size_type_last
 
 def main(args):
     # 1. 데이터를 불러오자
     df_train, df_test, df_train_target =do_load_dataset(
         train_path=args.path_train, test_path=args.path_test, target_name=args.target_name
     )
-
+    
     # 2. 데이터를 전처리하자
     df_train, df_test = do_preprocessing(
         df_train=df_train, #trian 데이터를 받곘다
@@ -29,6 +30,7 @@ def main(args):
         encoding_cols=args.encoding_cols,
         transform_cols=args.transform_cols
     )
+
     # 3. xgboost 오류 방지(컬럼에 기호가 들어가지 않게 막아주는 부분)
     df_train, df_test = clean_column_names(df_train, df_test)
 
