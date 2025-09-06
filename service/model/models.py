@@ -1,10 +1,12 @@
 #lightgbm_model 제작
 import enum
+from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
 
 class Model_Type(enum.Enum):# enum 클래스 정의
     # -> XGBosst, LightGBM, 등등 모델 여기에 정의
     lightgbm = (enum.auto(), LGBMClassifier) # lightgbm 모듈 정의
+    xgboost = (enum.auto(), XGBClassifier) # xgboost 모듈 정의
 
 def create_model(model_name:Model_Type, hp:dict): # lightgbm 모델 제작 함수
     if model_name not in Model_Type.__members__: # Model_Type에 없으면

@@ -15,12 +15,12 @@ from service.model.training import do_training
 from service.submission import create_submission_file
 
 def main(args):
-    # 데이터를 불러오자
+    # 1. 데이터를 불러오자
     df_train, df_test, df_train_target =do_load_dataset(
         train_path=args.path_train, test_path=args.path_test, target_name=args.target_name
     )
 
-    # 데이터를 전처리하자
+    # 2. 데이터를 전처리하자
     df_train, df_test = do_preprocessing(
         df_train=df_train, #trian 데이터를 받곘다
         df_test=df_test, #test 데이터를 받겠다
@@ -29,10 +29,11 @@ def main(args):
         transform_cols=args.transform_cols
     )
 
-    # 모델을 학습시키자
+    # 3. 모델을 학습시키자
     is_model = do_training(df_train, df_train_target, args)
+    logging.info(f"학습에 사용한 모델: {args.model_name}")
 
-    # submission 제출하는 부분
+    # 4. submission 결과 제출
     create_submission_file(is_model=is_model, df_test=df_test)
 
 if __name__ == "__main__":
@@ -59,7 +60,6 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="lightgbm")
+    args.add_argument("--model_name", default="xgboost")
     args.add_argument("--hp", default={}, type=dict)
-
     main(args.parse_args()) # 터미널에서 입력된 값을 실제로 해석해서 args 안에 저장.
