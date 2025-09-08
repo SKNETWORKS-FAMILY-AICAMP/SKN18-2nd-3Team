@@ -1,4 +1,4 @@
-<img width="1476" height="476" alt="image" src="https://github.com/user-attachments/assets/d03f578c-488b-43a5-827d-015874edf002" /># 📌 Main Thema  
+#📌 Main Thema  
 **부트캠프에 대한 회사와 지원자의 자가진단 시스템 개발**
 
 ---
