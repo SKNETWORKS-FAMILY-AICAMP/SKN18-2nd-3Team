@@ -6,6 +6,7 @@ logging.basicConfig(level=logging.INFO) #info이상 레벨만 보이게 해줌
 
 import argparse
 
+import lightgbm as lgb # lightgbm 실행시 로그 자꾸 뜨는거 막는 패키지
 #######################
 # 코드 정의 영역
 #######################
@@ -15,6 +16,15 @@ from service.model.training import do_training
 from service.submission import create_submission_file
 from service.submission import clean_column_names
 from service.preprocessing.create_feature import rel_major, size_type_last
+
+# LightGBM 실행시 귀찮은 로그 차단
+class _SilentLGBMLogger:
+    def info(self, msg):    # 일반 로그
+        pass
+    def warning(self, msg): # 경고 로그
+        pass
+
+lgb.register_logger(_SilentLGBMLogger())
 
 def main(args):
     # 1. 데이터를 불러오자
@@ -82,7 +92,11 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="lightgbm") # 학습할 모델 선택하는 부분
+    args.add_argument("--model_name", default="decisiontree") # 학습할 모델 선택하는 부분
     args.add_argument("--hp", default={}, type=dict)
+    args.add_argument("--decisiontree.max_depth", default="10")
+    args.add_argument("--decisiontree.min_samples_leaf", default="5")
+    args.add_argument("--decisiontree_max_depth", default=10, type=int) # 디시젼트리 하이퍼파리미터 설정하는 부분
+    args.add_argument("--decisiontree_min_samples_leaf", default=5, type=int) # 디시젼트리 하이퍼파라미터 설정하는 부분 
 
     main(args.parse_args()) # 터미널에서 입력된 값을 실제로 해석해서 args 안에 저장.
