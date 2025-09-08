@@ -81,7 +81,10 @@
 
 ### 📊 Model  
 - **XGBoost**  
-- **LightGBM**  
+- **LightGBM**
+| XGBoost | 결과값 |
+|------------|------------|
+| LightGBM | 결과값 |
 
 ---
 
