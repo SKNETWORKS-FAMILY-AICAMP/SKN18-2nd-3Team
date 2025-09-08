@@ -92,7 +92,7 @@ if __name__ == "__main__":
         'company_type',
         'last_new_job'
         ])
-    args.add_argument("--model_name", default="decisiontree") # 학습할 모델 선택하는 부분
+    args.add_argument("--model_name", default="lightgbm") # 학습할 모델 선택하는 부분
     args.add_argument("--hp", default={}, type=dict)
     args.add_argument("--decisiontree.max_depth", default="10")
     args.add_argument("--decisiontree.min_samples_leaf", default="5")
