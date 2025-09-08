@@ -76,7 +76,9 @@
 
 ### 🛠️ Feature Engineering  
 1. `relevent_experience + major_discipline → rel_major_code`  
-2. `company_size + company_type + last_new_job → job_size_type_code`  
+2. `company_size + company_type + last_new_job → job_size_type_code`
+   <img width="664" height="508" alt="image" src="https://github.com/user-attachments/assets/3e0081f6-7fbb-476a-a8b3-8ed927ee4e74" />
+
 
 ### 📊 Model  
 - **XGBoost**  
