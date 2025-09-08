@@ -35,7 +35,9 @@
   - AI·데이터 사이언스, 핀테크, 블록체인 과정 증가  
 - **현재**  
   - 데이터 사이언스/AI 과정 비중 확대  
-  - 기업 맞춤형 부트캠프 증가  
+  - 기업 맞춤형 부트캠프 증가
+    <img width="893" height="512" alt="image" src="https://github.com/user-attachments/assets/d4a815ff-2eaf-4787-b7ff-56ec1d89fae5" />
+
 
 ### 🔹 SKN18_2nd_3Team 문제의식  
 - 기술 변화 속도 ↑ → 실무형 부트캠프 수요 ↑  
