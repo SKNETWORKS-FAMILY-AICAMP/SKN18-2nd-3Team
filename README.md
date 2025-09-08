@@ -86,14 +86,13 @@
 - **XGBoost**  
 - **LightGBM**
 - **Decision Tree**
+  | 모델 | auc score |  
+  |------------|------------|
+  | XGBoost | 0.719 |  
+  | LightGBM | 0.704 |  
+  | Decision Tree | 0.507 |  
 
   <img width="664" height="508" alt="image" src="https://github.com/user-attachments/assets/3e0081f6-7fbb-476a-a8b3-8ed927ee4e74" />
-
-| 모델 | auc score |  
-|------------|------------|
-| XGBoost | 0.719 |  
-| LightGBM | 0.704 |  
-| Decision Tree | 0.507 |  
 
 ---
 
