@@ -45,16 +45,6 @@
 - 지원자: **자가진단 시스템 필요**  
 - 👉 회사·지원자 관점에서 **자가진단 및 대응책 마련** 프로그램 개발  
 
----
-
-## Dataset 소개
-**[HR Analytics: Job Change of Data Scientists](https://www.kaggle.com/datasets/arashnic/hr-analytics-job-change-of-data-scientists/data)**
-- **데이터 개요**:  
-  - 총 **19,158개 관측치**와 **14개 변수**로 구성된 HR 분석용 데이터셋.  
-  - 지원자의 교육, 경력, 회사 관련 정보 등을 포함하며, **교육 후 회사 합류 여부(target))**를 예측하는 이진 분류 문제
-
-
-
 
 ---
 
