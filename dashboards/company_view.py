@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# pandas 경고 완전 해결
 pd.set_option('future.no_silent_downcasting', True)
 
 df = pd.read_csv("result_csv/result_test.csv")
@@ -20,7 +19,7 @@ def info_show():
 
         important_columns = ["relevent_experience", "enrolled_university", "education_level", "major_discipline", "experience", "company_size", "company_type", "last_new_job", "prediction"]
 
-        random_df = df[important_columns].copy()  # .copy() 추가로 SettingWithCopyWarning 해결
+        random_df = df[important_columns].copy() 
 
 
         random_df['prediction'] = random_df['prediction'].apply(
@@ -52,7 +51,6 @@ def info_show():
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 def show():
-    st.title("company view")
 
     important_columns = ["relevent_experience", "enrolled_university", "education_level", "major_discipline", "experience", "company_size", "company_type", "last_new_job", "prediction"]
 
@@ -65,93 +63,80 @@ def show():
         if x >= 0.6 else '🟡' 
         if x >= 0.2 else '🔴'
     )
-    st.dataframe(random_df)
+    st.dataframe(random_df, use_container_width=True)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
 def graph1_show():
-    st.title("취업 경력이 없는 취업준비생")
-    # company_size: nan이고 company_type:nan이고 last_new_job: never인 데이터 추출 -> 취업 준비생
-    nan_df = df[df['company_size'].isna() & df['company_type'].isna() &( df['last_new_job'] == 'never')]
-    # 취업 준비생의 회사 합류 비율 그래프(green, yellow, red별로 그래프 그리기)
-    # prediction이 0.7이상인 데이터 총합 수
-    green_count = nan_df[nan_df['prediction'] >= 0.6].shape[0]
-    # prediction이 0.2이상 0.6미만인 데이터 총합 수
-    yellow_count = nan_df[(nan_df['prediction'] >= 0.2) & (nan_df['prediction'] < 0.6)].shape[0]
-    # prediction이 0.2미만인 데이터 총합 수
-    red_count = nan_df[nan_df['prediction'] < 0.2].shape[0]
+    prep_df = df[df['company_size'].isna() & df['company_type'].isna() & (df['last_new_job'] == 'never')]
+    change_df = df[df['company_size'].isna() & df['company_type'].isna() & (df['last_new_job'] != 'never') & (df['last_new_job'] != 'nan')]
+    worker_df = df[df['company_size'].notna() | df['company_type'].notna() | ((df['last_new_job'] != 'never') & (df['last_new_job'] != 'nan'))]
 
-    chart_data = pd.DataFrame({
-        'Category': ['🟢', '🟡', '🔴'],
-        'count': [green_count, yellow_count, red_count]
-    })
-    
-    fig= px.pie(chart_data, values='count', names='Category', color='Category', color_discrete_map={
-        '🟢': '#2ecc71',
-        '🟡': '#ffd35c', 
-        '🔴': '#ff5c5c'
-    })
-    st.plotly_chart(fig)
+    def make_pie(data, title):
+        green_count = data[data['prediction'] >= 0.6].shape[0]
+        yellow_count = data[(data['prediction'] >= 0.2) & (data['prediction'] < 0.6)].shape[0]
+        red_count = data[data['prediction'] < 0.2].shape[0]
 
+        chart_data = pd.DataFrame({
+            'Category': ['🟢', '🟡', '🔴'],
+            'count': [green_count, yellow_count, red_count]
+        })
+        fig = px.pie(
+            chart_data,
+            values='count',
+            names='Category',
+            color='Category',
+            title=title,
+            color_discrete_map={
+                '🟢': '#2ecc71',
+                '🟡': '#ffd35c',
+                '🔴': '#ff5c5c'
+            }
+        )
+        return fig
 
-    st.title("취업 경력이 있는 이직준비생")
-    # company_size: nan이고 company_type:nan이고 last_new_job: nan도 아니고 never도 아닌 데이터 추출 -> 이직 준비생
-    nan_df = df[df['company_size'].isna() & df['company_type'].isna() &( df['last_new_job'] != 'never') & (df['last_new_job'] != 'nan')]
-    green_count = nan_df[nan_df['prediction'] >= 0.6].shape[0]
-    # prediction이 0.2이상 0.6미만인 데이터 총합 수
-    yellow_count = nan_df[(nan_df['prediction'] >= 0.2) & (nan_df['prediction'] < 0.6)].shape[0]
-    # prediction이 0.2미만인 데이터 총합 수
-    red_count = nan_df[nan_df['prediction'] < 0.2].shape[0]
-    chart_data = pd.DataFrame({
-        'Category': ['🟢', '🟡', '🔴'],
-        'count': [green_count, yellow_count, red_count]
-    })
-    fig = px.pie(chart_data, values='count', names='Category', color='Category', color_discrete_map={
-        '🟢': '#2ecc71',
-        '🟡': '#ffd35c', 
-        '🔴': '#ff5c5c'
-    })
-    st.plotly_chart(fig)
+    col1, col2, col3 = st.columns(3)
 
-    st.title("현직자")
-    # company_size: nan이 아니거나 company_type: nan이 아니거나 last_new_job: nan도 아니고 never도 아닌 데이터 추출 -> 현업자
-    nan_df = df[df['company_size'].notna() | df['company_type'].notna() | (( df['last_new_job'] != 'never') & (df['last_new_job'] != 'nan'))]
-    green_count = nan_df[nan_df['prediction'] >= 0.6].shape[0]
-    # prediction이 0.2이상 0.6미만인 데이터 총합 수
-    yellow_count = nan_df[(nan_df['prediction'] >= 0.2) & (nan_df['prediction'] < 0.6)].shape[0]
-    # prediction이 0.2미만인 데이터 총합 수
-    red_count = nan_df[nan_df['prediction'] < 0.2].shape[0]
-    chart_data = pd.DataFrame({
-        'Category': ['🟢', '🟡', '🔴'],
-        'count': [green_count, yellow_count, red_count]
-    })
-    fig = px.pie(chart_data, values='count', names='Category', color='Category', color_discrete_map={
-        '🟢': '#2ecc71',
-        '🟡': '#ffd35c', 
-        '🔴': '#ff5c5c'
-    })
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(make_pie(prep_df, "취업 경력이 없는 취업준비생"), use_container_width=True)
+
+    with col2:
+        st.plotly_chart(make_pie(change_df, "취업 경력이 있는 이직준비생"), use_container_width=True)
+
+    with col3:
+        st.plotly_chart(make_pie(worker_df, "현직자"), use_container_width=True)
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 def graph2_show():
-    st.title("지원자의 학력")
+    st.title("지원자의 학력 & 재학 상태")
 
-    # 최종학력 파이차트 그리기
+    # -------- 학력 파이차트 --------
     level_df = df['education_level'].value_counts()
 
-    chart_data = pd.DataFrame({
+    chart_data_level = pd.DataFrame({
         'Category': level_df.index.tolist(),
         'count': level_df.values.tolist()
     })
 
-    fig = px.pie(chart_data, values='count', names='Category', color='Category', color_discrete_map={
-        'Graduate': 'red',
-        'Masters': 'green', 
-        'High School': 'blue',
-        'Phd': 'pink',
-        'Primary School': 'gray'
-    })
+    fig_level = px.pie(
+        chart_data_level, 
+        values='count', 
+        names='Category', 
+        color='Category',
+        color_discrete_map={
+            'Graduate': 'red',
+            'Masters': 'green', 
+            'High School': 'blue',
+            'Phd': 'pink',
+            'Primary School': 'gray'
+        }
+    )
 
-    # 각 학력별로 🔴🟡🟢 비율 계산
+    # 학력별 🔴🟡🟢 비율 계산
     education_details = {}
     for level in level_df.index:
         level_data = df[df['education_level'] == level]
@@ -166,42 +151,24 @@ def graph2_show():
             'total': len(level_data)
         }
 
-    # 호버 템플릿 더 크게
-    fig.update_layout(
-        hoverlabel=dict(
-            bgcolor="white",
-            bordercolor="black",
-            font_size=20, 
-            font_family="Arial",
-            font_color="black"
-        )
-    )
-    
-    # 각 학력별로 상세 정보를 hover에 표시
-    custom_hovertemplate = []
-    for i, level in enumerate(chart_data['Category']):
+    custom_hover_level = []
+    for level in chart_data_level['Category']:
         details = education_details[level]
-        green_pct = (details['green'] / details['total'] * 100) if details['total'] > 0 else 0
-        yellow_pct = (details['yellow'] / details['total'] * 100) if details['total'] > 0 else 0
-        red_pct = (details['red'] / details['total'] * 100) if details['total'] > 0 else 0
-        
-        # 각 학력별로 개별 hover 템플릿 설정
+        green_pct = (details['green']/details['total']*100) if details['total'] else 0
+        yellow_pct = (details['yellow']/details['total']*100) if details['total'] else 0
+        red_pct = (details['red']/details['total']*100) if details['total'] else 0
         hover_text = (
-        f'<b>{level}</b><br>' +
-        f'Green: {green_pct:.2f}%<br>' +
-        f'Yellow: {yellow_pct:.2f}%<br>' +
-        f'Red: {red_pct:.2f}%<br>' +
-        '<extra></extra>'
+            f"<b>{level}</b><br>"
+            f"Green: {green_pct:.2f}%<br>"
+            f"Yellow: {yellow_pct:.2f}%<br>"
+            f"Red: {red_pct:.2f}%<br>"
+            "<extra></extra>"
         )
-        custom_hovertemplate.append(hover_text)
-    fig.data[0].hovertemplate = custom_hovertemplate
-    
-    st.plotly_chart(fig, use_container_width=True)
+        custom_hover_level.append(hover_text)
+    fig_level.data[0].hovertemplate = custom_hover_level
 
 
-
-    st.title("지원자의 재학 상태")
-    # 학교재학상태별 파이차트 그리기기
+    # -------- 재학 상태 파이차트 --------
     enrolled_df = df['enrolled_university'].value_counts()
 
     chart_data_enrolled = pd.DataFrame({
@@ -209,14 +176,18 @@ def graph2_show():
         'count': enrolled_df.values.tolist()
     })
 
-    fig = px.pie(chart_data_enrolled, values='count', names='Category', color='Category', color_discrete_map={
-        'no_enrollment': 'red',
-        'Full time course': 'green', 
-        'Part time course': 'blue'
+    fig_enrolled = px.pie(
+        chart_data_enrolled, 
+        values='count', 
+        names='Category',
+        color='Category',
+        color_discrete_map={
+            'no_enrollment': 'red',
+            'Full time course': 'green', 
+            'Part time course': 'blue'
+        }
+    )
 
-    })
-
-    # 각 학력별로 🔴🟡🟢 비율 계산
     enrolled_details = {}
     for enrolled in enrolled_df.index:
         enrolled_data = df[df['enrolled_university'] == enrolled]
@@ -231,64 +202,68 @@ def graph2_show():
             'total': len(enrolled_data)
         }
 
-    # 호버 템플릿 더 크게
-    fig.update_layout(
-        hoverlabel=dict(
-            bgcolor="white",
-            bordercolor="black",
-            font_size=20, 
-            font_family="Arial",
-            font_color="black"
-        )
-    )
-    
-    # 각 학력별로 상세 정보를 hover에 표시
-    custom_enrolled_hovertemplate = []
-    for i, enrolled in enumerate(chart_data_enrolled['Category']):
+    custom_hover_enrolled = []
+    for enrolled in chart_data_enrolled['Category']:
         details = enrolled_details[enrolled]
-        green_pct = (details['green'] / details['total'] * 100) if details['total'] > 0 else 0
-        yellow_pct = (details['yellow'] / details['total'] * 100) if details['total'] > 0 else 0
-        red_pct = (details['red'] / details['total'] * 100) if details['total'] > 0 else 0
-        
+        green_pct = (details['green']/details['total']*100) if details['total'] else 0
+        yellow_pct = (details['yellow']/details['total']*100) if details['total'] else 0
+        red_pct = (details['red']/details['total']*100) if details['total'] else 0
         hover_text = (
-        f'<b>{enrolled}</b><br>' +
-        f'Green: {green_pct:.2f}%<br>' +
-        f'Yellow: {yellow_pct:.2f}%<br>' +
-        f'Red: {red_pct:.2f}%<br>' +
-        '<extra></extra>'
+            f"<b>{enrolled}</b><br>"
+            f"Green: {green_pct:.2f}%<br>"
+            f"Yellow: {yellow_pct:.2f}%<br>"
+            f"Red: {red_pct:.2f}%<br>"
+            "<extra></extra>"
         )
-        custom_enrolled_hovertemplate.append(hover_text)
-    fig.data[0].hovertemplate = custom_enrolled_hovertemplate
-    
-    st.plotly_chart(fig, use_container_width=True)
+        custom_hover_enrolled.append(hover_text)
+    fig_enrolled.data[0].hovertemplate = custom_hover_enrolled
+
+
+    # -------- 한 줄에 배치 --------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("지원자의 학력")
+        st.plotly_chart(fig_level, use_container_width=True)
+
+    with col2:
+        st.subheader("지원자의 재학 상태")
+        st.plotly_chart(fig_enrolled, use_container_width=True)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 def graph3_show():
     st.title("지원자의 전공")
+
+    # --- 전공 파이차트 ---
     major_df = df['major_discipline'].value_counts()
     chart_data_major = pd.DataFrame({
         'Category': major_df.index.tolist(),
         'count': major_df.values.tolist()
     })
-    fig = px.pie(chart_data_major, values='count', names='Category', color='Category', color_discrete_map={
-        'STEM': 'red',
-        'Business Degree': 'green',
-        'Arts': 'blue',
-        'Other': 'gray',
-        'No Major': 'pink',
-        'other': 'purple'
-    })
 
-    st.plotly_chart(fig, use_container_width=True)
+    fig_major = px.pie(
+        chart_data_major, 
+        values='count', 
+        names='Category', 
+        color='Category',
+        color_discrete_map={
+            'STEM': 'red',
+            'Business Degree': 'green',
+            'Arts': 'blue',
+            'Other': 'gray',
+            'No Major': 'pink',
+            'other': 'purple'
+        }
+    )
 
-    # 전공별 🔴🟡🟢 비율 계산하여 데이터프레임으으로 띄우기
+    # --- 전공별 비율 계산 ---
     major_details = {}
     for major in major_df.index:
         major_data = df[df['major_discipline'] == major]
         green_count = major_data[major_data['prediction'] >= 0.6].shape[0]
         yellow_count = major_data[(major_data['prediction'] >= 0.2) & (major_data['prediction'] < 0.6)].shape[0]
         red_count = major_data[major_data['prediction'] < 0.2].shape[0]
-        # 퍼센트 비율로 소수점 두자리까지 계산
+
         green_pct = round((green_count / major_data.shape[0] * 100), 2) if major_data.shape[0] > 0 else 0
         yellow_pct = round((yellow_count / major_data.shape[0] * 100), 2) if major_data.shape[0] > 0 else 0
         red_pct = round((red_count / major_data.shape[0] * 100), 2) if major_data.shape[0] > 0 else 0
@@ -298,39 +273,49 @@ def graph3_show():
             'yellow': yellow_pct,
             'red': red_pct,
         }
-    major_dataframe = pd.DataFrame(major_details)
-    major_dataframe = major_dataframe.T
-    major_dataframe.columns = ['Green(%)', 'Yellow(%)', 'Red(%)']
-    major_dataframe = major_dataframe.map(lambda x: f"{x:.2f}")  # applymap → map으로 변경
-    st.dataframe(major_dataframe)
 
+    major_dataframe = pd.DataFrame(major_details).T
+    major_dataframe.columns = ['Green(%)', 'Yellow(%)', 'Red(%)']
+    major_dataframe = major_dataframe.map(lambda x: f"{x:.2f}")
+
+    # --- 한 줄에 배치 ---
+    col1, col2 = st.columns([1.5, 1])  
+    with col1:
+        st.plotly_chart(fig_major, use_container_width=True)
+    with col2:
+        st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+        st.dataframe(major_dataframe, use_container_width=True)
+
+    # --- 지원자의 연차 라인 차트 ---
     st.title("지원자의 연차")
-    # experience별 🟠,🟢,🔴 비율 구하기
     experience_df = df['experience'].value_counts()
+
     experience_details = {}
     for experience in experience_df.index:
         experience_data = df[df['experience'] == experience]
         green_count = experience_data[experience_data['prediction'] >= 0.6].shape[0]
         yellow_count = experience_data[(experience_data['prediction'] >= 0.2) & (experience_data['prediction'] < 0.6)].shape[0]
         red_count = experience_data[experience_data['prediction'] < 0.2].shape[0]
+
         experience_details[experience] = {
             'green': green_count,
             'yellow': yellow_count,
             'red': red_count,
         }
+
     experience_dataframe = pd.DataFrame(experience_details).T
     experience_dataframe = experience_dataframe.sort_index()
 
-    fig = px.line(
+    fig_line = px.line(
         experience_dataframe.reset_index(),
         x="index", 
         y=["green", "yellow", "red"],
         labels={"index": "경력", "value": "지원자 수", "variable": "합류 비율"},
         color_discrete_map={
             "green": "#2ecc71",
-            "yellow":"#ffd35c",
+            "yellow": "#ffd35c",
             "red": "#ff5c5c"
         }
     )
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig_line, use_container_width=True)
