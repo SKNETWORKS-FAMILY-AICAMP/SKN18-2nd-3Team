@@ -8,7 +8,7 @@
 | 이상효 👩‍💻 | 황민우 👨‍💻 | 채린 👩‍💻 | 김창현 👩‍💻 | 최은정 👩‍💻 |
 |------------|------------|------------|------------|------------|
 | [@lsh7159](https://github.com/lsh7159) | [@minwooHwang](https://github.com/minwooHwang) | [@cofls99](https://github.com/cofls99) | [@changhyeon84](https://github.com/changhyeon84) | [@eunjeong0911](https://github.com/eunjeong0911) |
-| PM | 모듈화 개발, 깃허브관리 | 피쳐분석 및 피쳐생성, Lightgbm, xgboost 모델개발 | Decision Tree 모델개발 | 프론트엔드 개발 |
+| PM | 모듈화 개발, 깃허브관리 | 피쳐분석 및 피쳐생성, Lightgbm, xgboost 모델개발 | Decision Tree 모델개발 | 프론트엔드 개발, 서비스 기획 |
 
 ---
 
