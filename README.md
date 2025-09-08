@@ -1,4 +1,4 @@
-# 📌 Main Thema  
+<img width="1476" height="476" alt="image" src="https://github.com/user-attachments/assets/d03f578c-488b-43a5-827d-015874edf002" /># 📌 Main Thema  
 **부트캠프에 대한 회사와 지원자의 자가진단 시스템 개발**
 
 ---
@@ -107,6 +107,7 @@
 
 4. **모델 Raw Data 시각화**  
    - 변수(Feature)별 Target 매핑  
+  - <img width="1476" height="476" alt="image" src="https://github.com/user-attachments/assets/c1a4d278-adea-4897-9dfe-0327939a84b8" />
 
 #### Candidate View (자가진단)  
 1. **프로필 입력**  
