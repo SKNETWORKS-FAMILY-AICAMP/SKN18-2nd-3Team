@@ -86,28 +86,28 @@
   - 🔴 Red: 20% 미만  
   - 🟡 Yellow: 20% ~ 60%  
   - 🟢 Green: 60% 이상
-  - <img width="1491" height="187" alt="image" src="https://github.com/user-attachments/assets/5b5467f1-6820-4309-b618-83029523797d" />
+    <img width="1491" height="187" alt="image" src="https://github.com/user-attachments/assets/5b5467f1-6820-4309-b618-83029523797d" />
   
 
 #### Company View  
 1. **취업경력별 입사가능성**  
    - 신입 / 이직준비생 / 현직자 → 그래프화 + Hover 시 데이터 수 표시
-   - <img width="1469" height="402" alt="image" src="https://github.com/user-attachments/assets/8575e9d2-9007-4e5b-8768-42afd2b2a4db" />
+     <img width="1469" height="402" alt="image" src="https://github.com/user-attachments/assets/8575e9d2-9007-4e5b-8768-42afd2b2a4db" />
 
 2. **지원자 학력 & 재학 상태**  
    - 학력/재학상태 비율 그래프 + Signal 수치화
-   - <img width="1467" height="469" alt="image" src="https://github.com/user-attachments/assets/28ee35bd-bbfe-48bb-b2f6-5cd2e3b96b62" />
+     <img width="1467" height="469" alt="image" src="https://github.com/user-attachments/assets/28ee35bd-bbfe-48bb-b2f6-5cd2e3b96b62" />
 
 3. **전공 Level & 연차 분석**  
    - 전공별 Signal 비율 그래프 + 표
-   - <img width="1466" height="486" alt="image" src="https://github.com/user-attachments/assets/e0d8aec7-857b-43c6-a83e-03d4425be8df" />
+     <img width="1466" height="486" alt="image" src="https://github.com/user-attachments/assets/e0d8aec7-857b-43c6-a83e-03d4425be8df" />
 
    - 연차별 Signal 수치 Line Graph
-   - <img width="1521" height="519" alt="image" src="https://github.com/user-attachments/assets/a8fad772-15a2-4311-9316-91e31ef5448f" />
+     <img width="1521" height="519" alt="image" src="https://github.com/user-attachments/assets/a8fad772-15a2-4311-9316-91e31ef5448f" />
 
 4. **모델 Raw Data 시각화**  
    - 변수(Feature)별 Target 매핑  
-  <img width="1476" height="476" alt="image" src="https://github.com/user-attachments/assets/c1a4d278-adea-4897-9dfe-0327939a84b8" />
+    <img width="1476" height="476" alt="image" src="https://github.com/user-attachments/assets/c1a4d278-adea-4897-9dfe-0327939a84b8" />
 
 #### Candidate View (자가진단)  
 1. **프로필 입력**  
