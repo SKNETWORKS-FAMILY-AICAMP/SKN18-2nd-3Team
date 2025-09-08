@@ -64,7 +64,12 @@
 
 ## 🤖 모델 개발  
 
-- **Dataset**: *HR Analytics Job Change of Data Scientists*  
+### Dataset 소개
+**[HR Analytics: Job Change of Data Scientists](https://www.kaggle.com/datasets/arashnic/hr-analytics-job-change-of-data-scientists/data)**
+- **데이터 개요**:  
+  - 총 **19,158개 관측치**와 **14개 변수**로 구성된 HR 분석용 데이터셋.  
+  - 지원자의 교육, 경력, 회사 관련 정보 등을 포함하며, **교육 후 회사 합류 여부(target))**를 예측하는 이진 분류 문제
+
 
 ### 📂 변수 (Feature Selection)  
 - **Drop**  
