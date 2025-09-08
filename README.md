@@ -140,3 +140,10 @@
    - FeedBack 제공
    <img width="1600" height="439" alt="image" src="https://github.com/user-attachments/assets/ed432c29-7926-4831-bf03-81e7c0e11686" />
 
+---
+## 프로젝트 총평
+  - 이상효: 
+  - 황민우: 
+  - 최은정: 
+  - 채린: 
+  - 김창현: 
