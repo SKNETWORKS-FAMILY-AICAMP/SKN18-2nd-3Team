@@ -7,7 +7,7 @@
 
 | 이상효 👩‍💻 | 황민우 👨‍💻 | 채린 👩‍💻 | 김창현 👩‍💻 | 최은정 👩‍💻 |
 |------------|------------|------------|------------|------------|
-| [@lsh7159](https://github.com/lsh7159) | [@has710312](https://github.com/has710312) | [@Hyeseo20](https://github.com/Hyeseo20) | [@yosu2020](https://github.com/yosu2020) | [@eunjeong0911](https://github.com/eunjeong0911) |
+| [@lsh7159](https://github.com/lsh7159) | [@minwooHwang](https://github.com/minwooHwang) | [@Hyeseo20](https://github.com/Hyeseo20) | [@changhyeon84](https://github.com/changhyeon84) | [@eunjeong0911](https://github.com/eunjeong0911) |
 
 ---
 
