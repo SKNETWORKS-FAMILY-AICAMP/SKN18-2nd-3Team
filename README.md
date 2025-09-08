@@ -71,12 +71,15 @@
   `relevent_experience`, `enrolled_university`, `education_level`, `major_discipline`,  
   `experience`, `company_size`, `company_type`, `last_new_job`, `training_hours`  
 - **Target**  
-  `0 = 입사안함`, `1 = 입사`  
+  `0 = 입사안함`, `1 = 입사`
+  <img width="982" height="732" alt="image" src="https://github.com/user-attachments/assets/2b1a61b3-acf6-422b-abc4-cbf3685924f5" />
+
 
 ### 🛠️ Feature Engineering  
 1. `relevent_experience + major_discipline → rel_major_code`  
 2. `company_size + company_type + last_new_job → job_size_type_code`
    <img width="979" height="730" alt="image" src="https://github.com/user-attachments/assets/02842a19-7e0e-4739-b6c0-8fe1d0f8c7af" />
+   <img width="664" height="508" alt="image" src="https://github.com/user-attachments/assets/3e0081f6-7fbb-476a-a8b3-8ed927ee4e74" />
 
 
 ### 📊 Model  
@@ -92,7 +95,6 @@
 
 ## 🖥️ 시스템 구조  
 <img width="918" height="757" alt="image" src="https://github.com/user-attachments/assets/7bdd73cf-03a9-4a93-8ca3-278470c87202" />
-<img width="664" height="508" alt="image" src="https://github.com/user-attachments/assets/3e0081f6-7fbb-476a-a8b3-8ed927ee4e74" />
 
 ### 📊 Company Info & Candidate Info  
 - 화면 상단: **입사 확률 시그널 표시**  
