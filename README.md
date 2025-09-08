@@ -1,5 +1,6 @@
 📌 Main Thema  
 **부트캠프에 대한 회사와 지원자의 자가진단 시스템 개발**
+<img width="918" height="757" alt="image" src="https://github.com/user-attachments/assets/7bdd73cf-03a9-4a93-8ca3-278470c87202" />
 
 ---
 
