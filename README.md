@@ -78,7 +78,9 @@
 
 #### Company View  
 1. **취업경력별 입사가능성**  
-   - 신입 / 이직준비생 / 현직자 → 그래프화 + Hover 시 데이터 수 표시  
+   - 신입 / 이직준비생 / 현직자 → 그래프화 + Hover 시 데이터 수 표시
+   - <img width="1469" height="402" alt="image" src="https://github.com/user-attachments/assets/8575e9d2-9007-4e5b-8768-42afd2b2a4db" />
+
 2. **지원자 학력 & 재학 상태**  
    - 학력/재학상태 비율 그래프 + Signal 수치화  
 3. **전공 Level & 연차 분석**  
