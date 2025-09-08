@@ -24,7 +24,8 @@
 - **부트캠프**:  
   - 3~12개월 단기 집중 교육  
   - 프로그래밍, 데이터 분석, AI/ML 중심  
-  - 2010년대 후반부터 전 세계적으로 확산  
+  - 2010년대 후반부터 전 세계적으로 확산
+    <img width="893" height="512" alt="image" src="https://github.com/user-attachments/assets/d4a815ff-2eaf-4787-b7ff-56ec1d89fae5" />
 
 ### 🔹 부트캠프 규모 및 추이  
 - **글로벌**  
@@ -36,7 +37,8 @@
 - **현재**  
   - 데이터 사이언스/AI 과정 비중 확대  
   - 기업 맞춤형 부트캠프 증가
-    <img width="893" height="512" alt="image" src="https://github.com/user-attachments/assets/d4a815ff-2eaf-4787-b7ff-56ec1d89fae5" />
+    <img width="903" height="481" alt="image" src="https://github.com/user-attachments/assets/8285226f-c6f7-4b36-9be2-c4aaff77b7df" />
+
 
 
 ### 🔹 SKN18_2nd_3Team 문제의식  
