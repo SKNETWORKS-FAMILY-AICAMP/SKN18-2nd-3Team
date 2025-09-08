@@ -79,6 +79,8 @@
   `experience`, `company_size`, `company_type`, `last_new_job`, `training_hours`  
 - **Target**  
   `0 = 입사안함`, `1 = 입사`
+  <img width="984" height="731" alt="image" src="https://github.com/user-attachments/assets/419d59a8-30a5-4a4d-ba0f-8c501e0192b2" />
+
 
 
 ### 🛠️ Feature Engineering  
