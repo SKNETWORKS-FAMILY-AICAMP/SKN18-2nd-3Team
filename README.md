@@ -138,7 +138,8 @@
    - 교육 후 당사회사 합류 가능성 확률로 표시
    - 합류 가능성 수준을 Signal로 표시
    - FeedBack 제공
-   <img width="1600" height="439" alt="image" src="https://github.com/user-attachments/assets/ed432c29-7926-4831-bf03-81e7c0e11686" />
+   <img width="1459" height="279" alt="image" src="https://github.com/user-attachments/assets/6ff16e1d-b443-495d-aa8b-b6f2abab9007" />
+
 
 ---
 ## 프로젝트 총평
