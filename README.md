@@ -70,7 +70,8 @@
 
 
 ### 🛠️ Feature Engineering  
-1. `relevent_experience + major_discipline → rel_major_code`  
+1. `relevent_experience + major_discipline → rel_major_code`
+   - 각 전공과 기업과의 전공유사도를 merge   
 2. `company_size + company_type + last_new_job → job_size_type_code`
    - company_size : nan + company_type : nan + last_new_job : nan -> 무응답자
    - company_size : nan + company_type : nan + last_new_job : never -> 취업을 한번도 하지 못한 취업준비생
