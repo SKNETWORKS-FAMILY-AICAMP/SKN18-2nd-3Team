@@ -113,7 +113,12 @@
 1. **프로필 입력**  
    - 재직 경험 여부 / 총 경력  
    - 전공명 + 관련경력 여부  
-   - 학력 + 현재 상태  
+   - 학력 + 현재 상태
+     <img width="1566" height="764" alt="image" src="https://github.com/user-attachments/assets/e1af72d1-5a06-4175-ae30-c4738b4e7bd3" />
+
 2. **예측 결과 출력**  
-   ```bash
-   지원자의 교육 후 당사 회사 합류 확률은 (__._)% 입니다.
+   - 교육 후 당사회사 합류 가능성 확률로 표시
+   - 합류 가능성 수준을 Signal로 표시
+   - FeedBack 제공
+   <img width="1600" height="439" alt="image" src="https://github.com/user-attachments/assets/ed432c29-7926-4831-bf03-81e7c0e11686" />
+
