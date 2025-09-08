@@ -76,7 +76,7 @@
 2. `company_size + company_type + last_new_job → job_size_type_code`
    - company_size : nan + company_type : nan + last_new_job : nan -> 무응답자
    - company_size : nan + company_type : nan + last_new_job : never -> 취업을 한번도 하지 못한 취업준비생
-   - company_size : nan + company_type : nan + last_new_job : not nan & never -> 취업을 해본 이직 준비생
+   - company_size : nan + company_type : nan + last_new_job : not (nan & never) -> 취업을 해본 이직 준비생
    - company_size, company_type, last_new_job : 3 피쳐중 하나라도 결측치가 아니면 -> 현업자
    <img width="979" height="730" alt="image" src="https://github.com/user-attachments/assets/02842a19-7e0e-4739-b6c0-8fe1d0f8c7af" />
 
